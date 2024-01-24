@@ -9,8 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @State private var email = ""
-    @State private var password = ""
+    @StateObject var viewModel = LoginViewViewModel()
     
     var body: some View {
         NavigationStack{
@@ -20,18 +19,31 @@ struct LoginView: View {
                 
                 //Login Form
                 Form{
+                    ///error message
+                    if !viewModel.errorMessage.isEmpty{
+                        HStack {
+                            Image(systemName: "exclamationmark.warninglight")
+                                .foregroundColor(.pink)
+                            Text(viewModel.errorMessage)
+                                .foregroundStyle(Color.red)
+                                .padding(4)
+                        }
+                    }
+                    
                     HStack {
                         Image(systemName: "mail.fill")
                             .foregroundColor(.pink)
-                        TextField("User Email", text: $email)
+                        TextField("User Email", text: $viewModel.email)
                             .padding(10)
                             .background(Color.gray.opacity(0.1))
                             .cornerRadius(5)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled(true)
                     }
                     HStack {
                         Image(systemName: "key.horizontal.fill")
                             .foregroundColor(.pink)
-                        TextField("password", text: $password)
+                        SecureField("password", text: $viewModel.password)
                             .padding(10)
                             .background(Color.gray.opacity(0.1))
                             .cornerRadius(5)
@@ -39,7 +51,7 @@ struct LoginView: View {
                     TLButton(title: "Log In",
                              bgColor: Color.pink)
                     {
-                        print("login")
+                        viewModel.login()
                     }
                     .padding()
                 }
