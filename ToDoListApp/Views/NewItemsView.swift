@@ -31,11 +31,11 @@ struct NewItemsView: View {
                     }else{
                         viewModel.showAlert = true
                     }
-                    
                 }
                 .padding()
+            }.alert(isPresented: $viewModel.showAlert){
+                Alert(title: Text("Error"), message: Text("Please fill in all fields and select due date that is today or newer."))
             }
-            
         }
     }
 }

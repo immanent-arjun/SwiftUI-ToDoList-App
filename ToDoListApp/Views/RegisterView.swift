@@ -29,7 +29,6 @@ struct RegisterView: View {
                     }
                 }
                 
-                
                 HStack {
                     Image(systemName: "person.fill")
                         .foregroundColor(.orange)

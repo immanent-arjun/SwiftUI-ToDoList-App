@@ -54,8 +54,15 @@ struct LoginView: View {
                         viewModel.login()
                     }
                     .padding()
+                    
+                    Button("Reset Password") {
+                        viewModel.resetPassword()
+                    }.padding(.leading,220)
+                        .tint(Color.pink)
                 }
-                
+                .alert(isPresented: $viewModel.showAlert) {
+                    Alert(title: Text("Password Reset"), message: Text(viewModel.alertMessage), dismissButton: .default(Text("OK")))
+                        }
                 //Create Account
                 VStack(spacing:10){
                     Text("New arround here?")

@@ -13,7 +13,8 @@ class LoginViewViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
     @Published var errorMessage = ""
-    
+    @Published var showAlert: Bool = false
+    @Published var alertMessage: String = ""
     init() {}
     
     func login(){
@@ -21,8 +22,29 @@ class LoginViewViewModel: ObservableObject {
             return
         }
         ///Try Login
-        Auth.auth().signIn(withEmail: email, password: password)
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            
+            guard let self = self else { return }
+            
+            if let error = error {
+                self.errorMessage = "worng! email or password"
+                return
+            }
+        }
+        
     }
+    
+    func resetPassword() {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                self.alertMessage = "Error: \(error.localizedDescription)"
+            } else {
+                self.alertMessage = "Password reset email sent. Check your inbox."
+            }
+            self.showAlert = true
+        }
+    }
+    
     
     func validate() -> Bool{
         self.errorMessage = ""

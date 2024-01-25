@@ -19,9 +19,11 @@ class RegisterViewViewModel: ObservableObject {
     init() {}
     
     func registerUser(){
+        
         guard validate() else {
             return 
         }
+        
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             guard let userId = result?.user.uid else {
                 return
@@ -58,6 +60,7 @@ class RegisterViewViewModel: ObservableObject {
         }
         
         guard password.count >= 6 else {
+            self.errorMessage = "Please enter minimum 7 charcters"
             return false
         }
         
